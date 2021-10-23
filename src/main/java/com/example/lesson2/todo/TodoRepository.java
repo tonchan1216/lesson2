@@ -7,10 +7,10 @@ import java.util.Optional;
 
 @Mapper
 public interface TodoRepository {
-    @Select("SELCT todo_id, todo_title, finished, created_at FROM todo where todo_id = #{todoId}")
+    @Select("SELECT todo_id, todo_title, finished, created_at FROM todo where todo_id = #{todoId}")
     Optional<Todo> findById(Long todoId);
 
-    @Select("SELCT todo_id, todo_title, finished, created_at FROM todo")
+    @Select("SELECT todo_id, todo_title, finished, created_at FROM todo")
     Collection<Todo> findAll();
 
     @Insert("INSERT INTO todo(todo_title, finished, created_at) VALUES (#{todoTitle}, #{finished}, #{createdAt})")
@@ -23,6 +23,6 @@ public interface TodoRepository {
     @Delete("DELETE FROM todo where todo_id = #{todoId}")
     long deleteById(Long todoId);
 
-    @Select("SELCT count(*) FROM todo where finished = #{finished}")
+    @Select("SELECT count(*) FROM todo where finished = #{finished}")
     long countByFinished(boolean finished);
 }
