@@ -1,3 +1,4 @@
 mybatis:
-  configuretion:
+  configuration:
     mapUnderscoreToCamelCase: true
+    autoMappingUnknownColumnBehavior: FAILING
