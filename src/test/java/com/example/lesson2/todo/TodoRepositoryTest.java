@@ -45,7 +45,7 @@ public class TodoRepositoryTest {
     @Test
     @DisplayName("todoIdに対応するTodoが取得できるか")
     void testFindById() {
-        Todo actualTodo = todoRepository.findById(1L).get();
+        Todo actualTodo = todoRepository.findById(1L).orElse(null);
 
         assertThat(actualTodo)
                 .extracting(Todo::getTodoId, Todo::getTodoTitle, Todo::isFinished, Todo::getCreatedAt)
@@ -79,6 +79,14 @@ public class TodoRepositoryTest {
                 .ignoringFields("todoId", "finished")
                 .isEqualTo(todo);
         assertThat(updated).hasFieldOrPropertyWithValue("finished", true);
+    }
+
+    @Test
+    @DisplayName("todoId=1が削除できていることを確認する(Repository)")
+    void testDeleteById() {
+        long count = todoRepository.deleteById(1L);
+
+        assertThat(count).isEqualTo(1);
     }
 
     @Test

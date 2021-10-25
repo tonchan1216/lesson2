@@ -65,8 +65,8 @@ public class TodoControllerTest {
         ResponseEntity<TodoResource> actualResponseEntity =
                 testRestTemplate.getForEntity("/todos/1", TodoResource.class);
 
-        then(todoService).should(times(1)).findOne(ArgumentMatchers.longThat(arg -> arg == expectTodo.getTodoId()));
-        assertThat(actualResponseEntity.getBody()).isEqualToComparingFieldByField(expectTodoResource);
+        then(todoService).should(times(1)).findOne(ArgumentMatchers.longThat(arg -> arg.equals(expectTodo.getTodoId())));
+        assertThat(actualResponseEntity.getBody()).usingRecursiveComparison().isEqualTo(expectTodoResource);
         assertThat(actualResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -84,8 +84,8 @@ public class TodoControllerTest {
         ResponseEntity<TodoResource> actualResponseEntity =
                 testRestTemplate.postForEntity("/todos", inputTodoResource, TodoResource.class);
 
-        then(todoService).should(times(1)).create(ArgumentMatchers.<Todo>argThat(arg -> inputTodo.getTodoTitle().equals(arg.getTodoTitle())));
-        assertThat(actualResponseEntity.getBody()).isEqualToComparingFieldByField(expectTodoResource);
+        then(todoService).should(times(1)).create(ArgumentMatchers.argThat(arg -> inputTodo.getTodoTitle().equals(arg.getTodoTitle())));
+        assertThat(actualResponseEntity.getBody()).usingRecursiveComparison().isEqualTo(expectTodoResource);
         assertThat(actualResponseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
@@ -102,8 +102,8 @@ public class TodoControllerTest {
         ResponseEntity<TodoResource> actualResponseEntity =
                 testRestTemplate.exchange(actualRequestEntity, TodoResource.class);
 
-        then(todoService).should(times(1)).finish(ArgumentMatchers.longThat(arg -> arg == expectTodo.getTodoId()));
-        assertThat(actualResponseEntity.getBody()).isEqualToComparingFieldByField(expectTodoResource);
+        then(todoService).should(times(1)).finish(ArgumentMatchers.longThat(arg -> arg.equals(expectTodo.getTodoId())));
+        assertThat(actualResponseEntity.getBody()).usingRecursiveComparison().isEqualTo(expectTodoResource);
         assertThat(actualResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
